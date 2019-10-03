@@ -1,4 +1,4 @@
-package com.example.webservicestest.external.web;
+package com.example.webservicestest.services;
 
 import android.content.Context;
 

@@ -1,4 +1,4 @@
-package com.example.webservicestest.external.web;
+package com.example.webservicestest.services;
 
 import android.content.Context;
 
@@ -7,9 +7,9 @@ import com.android.volley.toolbox.StringRequest;
 
 import java.util.Map;
 
-public abstract class WebServiceWrite extends WebService<Void> {
+public abstract class WebServiceWrite extends WebService<Boolean> {
 
-    protected WebServiceWrite(Context context, RequestAcceptedListener<Void> requestAcceptedListener, RequestRejectedListener requestRejectedListener) {
+    protected WebServiceWrite(Context context, RequestAcceptedListener<Boolean> requestAcceptedListener, RequestRejectedListener requestRejectedListener) {
         super(context, requestAcceptedListener, requestRejectedListener);
     }
 

@@ -1,17 +1,19 @@
-package com.example.webservicestest.external.web;
+package com.example.webservicestest.services.usecases;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.example.webservicestest.domain.entities.User;
+import com.example.webservicestest.entities.User;
+import com.example.webservicestest.services.WebServiceWrite;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class WSInsertUser extends WebServiceWrite {
+public class InsertUserUC extends WebServiceWrite {
 
-    public WSInsertUser(Context context, RequestAcceptedListener<Void> requestAcceptedListener, RequestRejectedListener requestRejectedListener) {
+    public InsertUserUC(Context context, RequestAcceptedListener<Boolean> requestAcceptedListener, RequestRejectedListener requestRejectedListener) {
         super(context, requestAcceptedListener, requestRejectedListener);
     }
 
@@ -37,9 +39,12 @@ public class WSInsertUser extends WebServiceWrite {
         return new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if (response.trim().equalsIgnoreCase("successful")) {
-                    requestAcceptedListener.onRequestAccepted(null);
-                }
+                Log.d("JSON", "Insert user request accepted: " + response);
+
+                if (response.trim().equalsIgnoreCase("1"))
+                    requestAcceptedListener.onRequestAccepted(true);
+                else
+                    requestAcceptedListener.onRequestAccepted(false);
             }
         };
     }
@@ -49,6 +54,7 @@ public class WSInsertUser extends WebServiceWrite {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.d("JSON", "Insert user request rejected: " + error);
                 requestRejectedListener.onRequestRejected();
             }
         };

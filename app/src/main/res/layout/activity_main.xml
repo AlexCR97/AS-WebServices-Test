@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".external.presentation.MainActivity">
+    tools:context=".ui.activities.MainActivity">
 
     <LinearLayout
         android:id="@+id/llUserInfo"
@@ -113,6 +113,14 @@
                 android:background="@android:color/holo_red_light"/>
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/bListUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="List users"
+            android:textSize="15sp"/>
 
     </LinearLayout><!--llUserInfo-->
 

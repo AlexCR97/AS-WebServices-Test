@@ -1,4 +1,4 @@
-package com.example.webservicestest.domain.entities;
+package com.example.webservicestest.entities;
 
 public class User {
 

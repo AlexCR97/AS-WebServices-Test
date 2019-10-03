@@ -1,19 +1,20 @@
-package com.example.webservicestest.external.web;
+package com.example.webservicestest.services.usecases;
 
 import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.example.webservicestest.domain.entities.User;
+import com.example.webservicestest.entities.User;
+import com.example.webservicestest.services.WebServiceRead;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class WSSelectUser extends WebServiceRead<User> {
+public class SelectUserUC extends WebServiceRead<User> {
 
-    public WSSelectUser(Context context, RequestAcceptedListener<User> requestAcceptedListener, RequestRejectedListener requestRejectedListener) {
+    public SelectUserUC(Context context, RequestAcceptedListener<User> requestAcceptedListener, RequestRejectedListener requestRejectedListener) {
         super(context, requestAcceptedListener, requestRejectedListener);
     }
 
