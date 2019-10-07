@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.activities.MainActivity">
+    tools:context=".ui.actividades.MainActivity">
 
     <LinearLayout
         android:id="@+id/llUserInfo"
@@ -57,7 +57,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
             android:textSize="20sp"
-            android:hint="Last name"/>
+            android:hint="Last nombre"/>
 
         <Button
             android:id="@+id/bBirthDate"

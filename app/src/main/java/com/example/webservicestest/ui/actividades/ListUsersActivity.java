@@ -1,4 +1,4 @@
-package com.example.webservicestest.ui.activities;
+package com.example.webservicestest.ui.actividades;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,10 +8,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.webservicestest.R;
-import com.example.webservicestest.entities.User;
-import com.example.webservicestest.services.WebService;
-import com.example.webservicestest.services.usecases.ListUsersUC;
-import com.example.webservicestest.ui.adapters.UsersAdapter;
+import com.example.webservicestest.entidades.Usuario;
+import com.example.webservicestest.servicios.ServicioWeb;
+import com.example.webservicestest.servicios.implementaciones.SWListarUsuarios;
+import com.example.webservicestest.ui.adaptadores.UsersAdapter;
 
 import java.util.List;
 
@@ -30,20 +30,20 @@ public class ListUsersActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.show();
 
-        new ListUsersUC(this, new WebService.RequestAcceptedListener<List<User>>() {
+        new SWListarUsuarios(this, new ServicioWeb.EventoPeticionAceptada<List<Usuario>>() {
             @Override
-            public void onRequestAccepted(List<User> response) {
-                UsersAdapter usersAdapter = new UsersAdapter(ListUsersActivity.this, R.layout.item_user, response);
+            public void alAceptarPeticion(List<Usuario> respuesta) {
+                UsersAdapter usersAdapter = new UsersAdapter(ListUsersActivity.this, R.layout.item_user, respuesta);
                 lvUsers.setAdapter(usersAdapter);
 
                 progressDialog.hide();
             }
-        }, new WebService.RequestRejectedListener() {
+        }, new ServicioWeb.EventoPeticionRechazada() {
             @Override
-            public void onRequestRejected() {
+            public void alRechazarPeticion() {
                 Toast.makeText(ListUsersActivity.this, "Request rejected", Toast.LENGTH_SHORT).show();
                 progressDialog.hide();
             }
-        }).sendRequest();
+        }).enviarPeticion();
     }
 }

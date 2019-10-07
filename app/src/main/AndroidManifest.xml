@@ -10,17 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.activities.ListUsersActivity"></activity>
-        <activity android:name=".ui.activities.MainActivity">
+        <activity android:nombre=".ui.activities.ListUsersActivity"></activity>
+        <activity android:nombre=".ui.activities.MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:nombre="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:nombre="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:nombre="android.permission.ACCESS_NETWORK_STATE" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:nombre="android.permission.INTERNET" />
 
 </manifest>

@@ -1,65 +1,65 @@
-package com.example.webservicestest.services.usecases;
+package com.example.webservicestest.servicios.implementaciones;
 
 import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.example.webservicestest.entities.User;
-import com.example.webservicestest.services.WebServiceWrite;
+import com.example.webservicestest.entidades.Usuario;
+import com.example.webservicestest.servicios.ServicioWebEscritura;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class UpdateUserUC extends WebServiceWrite {
+public class UpdateUserUC extends ServicioWebEscritura {
 
-    public UpdateUserUC(Context context, RequestAcceptedListener<Boolean> requestAcceptedListener, RequestRejectedListener requestRejectedListener) {
+    public UpdateUserUC(Context context, EventoPeticionAceptada<Boolean> requestAcceptedListener, EventoPeticionRechazada requestRejectedListener) {
         super(context, requestAcceptedListener, requestRejectedListener);
     }
 
     @Override
-    protected Map<String, String> defineParams(Object... params) {
+    protected Map<String, String> definirParams(Object... params) {
         int id = Integer.parseInt(params[0].toString());
-        User user = (User) params[1];
+        Usuario user = (Usuario) params[1];
 
         Map<String, String> args = new HashMap<>();
         args.put("id", String.valueOf(id));
         args.put("new_id", String.valueOf(user.getId()));
-        args.put("name", user.getName());
-        args.put("last_name", user.getLastName());
-        args.put("birth_date", user.getBirthDate());
+        args.put("name", user.getNombre());
+        args.put("last_name", user.getApellido());
+        args.put("birth_date", user.getFechaNacimiento());
         args.put("image", "dummy");
 
         return args;
     }
 
     @Override
-    protected String defineUrl(Object... params) {
+    protected String definirUrl(Object... args) {
         return "http://192.168.0.2/web_services_test/WSUpdateUser.php";
     }
 
     @Override
-    protected Response.Listener defineResponseListener() {
+    protected Response.Listener definirResponseListener() {
         return new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("JSON", "Insert user request accepted: " + response);
 
                 if (response.trim().equalsIgnoreCase("1"))
-                    requestAcceptedListener.onRequestAccepted(true);
+                    eventoPeticionAceptada.alAceptarPeticion(true);
                 else
-                    requestAcceptedListener.onRequestAccepted(false);
+                    eventoPeticionAceptada.alAceptarPeticion(false);
             }
         };
     }
 
     @Override
-    protected Response.ErrorListener defineErrorListener() {
+    protected Response.ErrorListener definirErrorListener() {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("JSON", "Error response: " + error.getMessage());
-                requestRejectedListener.onRequestRejected();
+                eventoPeticionRechazada.alRechazarPeticion();
             }
         };
     }
