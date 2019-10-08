@@ -2,7 +2,7 @@ package com.example.webservicestest.negocios.casos;
 
 import android.content.Context;
 
-import com.example.webservicestest.servicios.ServicioWeb;
+import com.example.webservicestest.servicios.web.ServicioWeb;
 
 public abstract class CasoUso<T> {
 

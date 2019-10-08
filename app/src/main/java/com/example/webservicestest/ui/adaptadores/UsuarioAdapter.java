@@ -15,14 +15,14 @@ import androidx.annotation.Nullable;
 
 import com.example.webservicestest.R;
 import com.example.webservicestest.entidades.Usuario;
-import com.example.webservicestest.servicios.ServicioWeb;
-import com.example.webservicestest.servicios.implementaciones.SWImagenUsuario;
+import com.example.webservicestest.negocios.casos.CUImagenUsuario;
+import com.example.webservicestest.negocios.casos.CasoUso;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UsersAdapter extends ArrayAdapter<Usuario> {
+public class UsuarioAdapter extends ArrayAdapter<Usuario> {
 
     public static class Holder {
         ImageView ivImage;
@@ -37,7 +37,7 @@ public class UsersAdapter extends ArrayAdapter<Usuario> {
 
     private Map<Integer, Bitmap> cacheImages = new HashMap<>();
 
-    public UsersAdapter(@NonNull Context context, int resource, @NonNull List<Usuario> users) {
+    public UsuarioAdapter(@NonNull Context context, int resource, @NonNull List<Usuario> users) {
         super(context, resource, users);
 
         this.context = context;
@@ -72,16 +72,17 @@ public class UsersAdapter extends ArrayAdapter<Usuario> {
 
         if (!cacheImages.containsKey(user.getId())) {
             final Holder finalHolder = holder;
-            new SWImagenUsuario(context, new ServicioWeb.EventoPeticionAceptada<Bitmap>() {
+
+            new CUImagenUsuario(context, new CasoUso.EventoPeticionAceptada<Bitmap>() {
                 @Override
-                public void alAceptarPeticion(Bitmap respuesta) {
-                    cacheImages.put(user.getId(), respuesta);
-                    finalHolder.ivImage.setImageBitmap(respuesta);
+                public void alAceptarPeticion(Bitmap bitmap) {
+                    cacheImages.put(user.getId(), bitmap);
+                    finalHolder.ivImage.setImageBitmap(bitmap);
                 }
-            }, new ServicioWeb.EventoPeticionRechazada() {
+            }, new CasoUso.EventoPeticionRechazada() {
                 @Override
-                public void alRechazarPeticion() {
-                    Log.d("JSON", "Could not obtain bitmap from SWImagenUsuario");
+                public void alRechazarOperacion() {
+                    Log.d("JSON", "Could not obtain bitmap from 'CUImagenUsuario'");
                 }
             }).enviarPeticion(user.getRutaImagen());
         }

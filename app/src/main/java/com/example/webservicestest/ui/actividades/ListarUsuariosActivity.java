@@ -9,13 +9,13 @@ import android.widget.Toast;
 
 import com.example.webservicestest.R;
 import com.example.webservicestest.entidades.Usuario;
-import com.example.webservicestest.servicios.ServicioWeb;
-import com.example.webservicestest.servicios.implementaciones.SWListarUsuarios;
-import com.example.webservicestest.ui.adaptadores.UsersAdapter;
+import com.example.webservicestest.negocios.casos.CUListarUsuarios;
+import com.example.webservicestest.negocios.casos.CasoUso;
+import com.example.webservicestest.ui.adaptadores.UsuarioAdapter;
 
 import java.util.List;
 
-public class ListUsersActivity extends AppCompatActivity {
+public class ListarUsuariosActivity extends AppCompatActivity {
 
     private ListView lvUsers;
     private ProgressDialog progressDialog;
@@ -30,18 +30,18 @@ public class ListUsersActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.show();
 
-        new SWListarUsuarios(this, new ServicioWeb.EventoPeticionAceptada<List<Usuario>>() {
+        new CUListarUsuarios(this, new CasoUso.EventoPeticionAceptada<List<Usuario>>() {
             @Override
-            public void alAceptarPeticion(List<Usuario> respuesta) {
-                UsersAdapter usersAdapter = new UsersAdapter(ListUsersActivity.this, R.layout.item_user, respuesta);
+            public void alAceptarPeticion(List<Usuario> usuarios) {
+                UsuarioAdapter usersAdapter = new UsuarioAdapter(ListarUsuariosActivity.this, R.layout.item_user, usuarios);
                 lvUsers.setAdapter(usersAdapter);
 
                 progressDialog.hide();
             }
-        }, new ServicioWeb.EventoPeticionRechazada() {
+        }, new CasoUso.EventoPeticionRechazada() {
             @Override
-            public void alRechazarPeticion() {
-                Toast.makeText(ListUsersActivity.this, "Request rejected", Toast.LENGTH_SHORT).show();
+            public void alRechazarOperacion() {
+                Toast.makeText(ListarUsuariosActivity.this, "Request rejected", Toast.LENGTH_SHORT).show();
                 progressDialog.hide();
             }
         }).enviarPeticion();

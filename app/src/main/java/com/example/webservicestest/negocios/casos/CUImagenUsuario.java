@@ -5,8 +5,8 @@ import android.graphics.Bitmap;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.example.webservicestest.servicios.ServicioWeb;
-import com.example.webservicestest.servicios.implementaciones.SWImagenUsuario;
+import com.example.webservicestest.servicios.web.ServicioWeb;
+import com.example.webservicestest.servicios.web.implementaciones.SWImagenUsuario;
 
 public class CUImagenUsuario extends CasoUso<Bitmap> {
 
@@ -15,7 +15,7 @@ public class CUImagenUsuario extends CasoUso<Bitmap> {
     }
 
     @Override
-    public ServicioWeb definirServicioWeb() {
+    protected ServicioWeb definirServicioWeb() {
         return new SWImagenUsuario(context, new Response.Listener<Bitmap>() {
             @Override
             public void onResponse(Bitmap response) {

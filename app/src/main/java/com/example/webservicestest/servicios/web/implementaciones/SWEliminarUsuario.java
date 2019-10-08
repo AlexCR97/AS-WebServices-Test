@@ -1,9 +1,10 @@
-package com.example.webservicestest.servicios.implementaciones;
+package com.example.webservicestest.servicios.web.implementaciones;
 
 import android.content.Context;
 
 import com.android.volley.Response;
-import com.example.webservicestest.servicios.ServicioWebEscritura;
+import com.example.webservicestest.servicios.web.ServicioWebEscritura;
+import com.example.webservicestest.servicios.web.Servidor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +25,7 @@ public class SWEliminarUsuario extends ServicioWebEscritura {
 
     @Override
     protected String definirUrl(Object... args) {
-        return "http://192.168.0.2/web_services_test/WSDeleteUser.php";
+        return "http://" + Servidor.IP + "/web_services_test/WSDeleteUser.php";
     }
 
 }

@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.example.webservicestest.servicios.ServicioWeb;
-import com.example.webservicestest.servicios.implementaciones.SWRegistrarUsuario;
+import com.example.webservicestest.servicios.web.ServicioWeb;
+import com.example.webservicestest.servicios.web.implementaciones.SWRegistrarUsuario;
 
 public class CURegistrarUsuario extends CasoUso<String> {
 
@@ -14,7 +14,7 @@ public class CURegistrarUsuario extends CasoUso<String> {
     }
 
     @Override
-    public ServicioWeb definirServicioWeb() {
+    protected ServicioWeb definirServicioWeb() {
         return new SWRegistrarUsuario(context, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

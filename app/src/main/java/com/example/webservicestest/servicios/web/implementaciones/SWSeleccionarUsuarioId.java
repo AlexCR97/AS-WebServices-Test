@@ -1,9 +1,10 @@
-package com.example.webservicestest.servicios.implementaciones;
+package com.example.webservicestest.servicios.web.implementaciones;
 
 import android.content.Context;
 
 import com.android.volley.Response;
-import com.example.webservicestest.servicios.ServicioWebLectura;
+import com.example.webservicestest.servicios.web.ServicioWebLectura;
+import com.example.webservicestest.servicios.web.Servidor;
 
 import org.json.JSONObject;
 
@@ -16,7 +17,7 @@ public class SWSeleccionarUsuarioId extends ServicioWebLectura {
     @Override
     protected String definirUrl(Object... args) {
         int id = Integer.parseInt(args[0].toString());
-        return "http://192.168.0.2/web_services_test/WSSelectUserId.php?id=" + id;
+        return "http://" + Servidor.IP + "/web_services_test/WSSelectUserId.php?id=" + id;
     }
 
 }

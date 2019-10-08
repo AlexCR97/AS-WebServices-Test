@@ -17,14 +17,12 @@ import android.widget.Toast;
 
 import com.example.webservicestest.R;
 import com.example.webservicestest.entidades.Usuario;
+import com.example.webservicestest.negocios.casos.CUActualizarUsuario;
+import com.example.webservicestest.negocios.casos.CUEliminarUsuario;
+import com.example.webservicestest.negocios.casos.CUImagenUsuario;
+import com.example.webservicestest.negocios.casos.CURegistrarUsuario;
 import com.example.webservicestest.negocios.casos.CUSeleccionarUsuarioId;
 import com.example.webservicestest.negocios.casos.CasoUso;
-import com.example.webservicestest.servicios.ServicioWeb;
-import com.example.webservicestest.servicios.implementaciones.SWEliminarUsuario;
-import com.example.webservicestest.servicios.implementaciones.SWImagenUsuario;
-import com.example.webservicestest.servicios.implementaciones.SWRegistrarUsuario;
-import com.example.webservicestest.servicios.implementaciones.SWSeleccionarUsuarioId;
-import com.example.webservicestest.servicios.implementaciones.UpdateUserUC;
 
 import java.util.Calendar;
 
@@ -67,32 +65,32 @@ public class MainActivity extends AppCompatActivity {
         bSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectUser();
+                seleccionarUsuario();
             }
         });
         bInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                insertUser();
+                registrarUsuario();
             }
         });
         bUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateUser();
+                actualizarUsuario();
             }
         });
         bDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteUser();
+                eliminarUsuario();
             }
         });
 
         bListUsers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listUsers();
+                listarUsuarios();
             }
         });
     }
@@ -126,51 +124,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void selectUser() {
-        String id = etId.getText().toString();
-
-        if (id.isEmpty()) {
-            Toast.makeText(this, "You must enter a valid id", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        progressDialog.show();
-
-        SWSeleccionarUsuarioId ws = new SWSeleccionarUsuarioId(this, new ServicioWeb.EventoPeticionAceptada<Usuario>() {
-            @Override
-            public void alAceptarPeticion(Usuario respuesta) {
-                etName.setText(respuesta.getNombre());
-                etLastName.setText(respuesta.getApellido());
-                bBirthDate.setText(respuesta.getFechaNacimiento());
-
-                SWImagenUsuario getUserImageUC = new SWImagenUsuario(MainActivity.this, new ServicioWeb.EventoPeticionAceptada<Bitmap>() {
-                    @Override
-                    public void alAceptarPeticion(Bitmap respuesta) {
-                        ivImage.setImageBitmap(respuesta);
-                        progressDialog.hide();
-                    }
-                }, new ServicioWeb.EventoPeticionRechazada() {
-                    @Override
-                    public void alRechazarPeticion() {
-                        progressDialog.hide();
-                    }
-                });
-                getUserImageUC.enviarPeticion(respuesta.getRutaImagen());
-
-                progressDialog.hide();
-            }
-        }, new ServicioWeb.EventoPeticionRechazada() {
-            @Override
-            public void alRechazarPeticion() {
-                progressDialog.hide();
-                Toast.makeText(MainActivity.this, "Request rejected", Toast.LENGTH_SHORT).show();
-            }
-        });
-        ws.enviarPeticion(Integer.parseInt(id));
-
-        progressDialog.show();
-    }
-
     private void seleccionarUsuario() {
         String id = etId.getText().toString();
 
@@ -181,12 +134,28 @@ public class MainActivity extends AppCompatActivity {
 
         progressDialog.show();
 
-        CUSeleccionarUsuarioId cu = new CUSeleccionarUsuarioId(this, new CasoUso.EventoPeticionAceptada<Usuario>() {
+        CUSeleccionarUsuarioId cuSeleccionarUsuarioId = new CUSeleccionarUsuarioId(this, new CasoUso.EventoPeticionAceptada<Usuario>() {
             @Override
             public void alAceptarPeticion(Usuario usuario) {
                 etName.setText(usuario.getNombre());
                 etLastName.setText(usuario.getApellido());
                 bBirthDate.setText(usuario.getFechaNacimiento());
+
+                CUImagenUsuario cuImagenUsuario = new CUImagenUsuario(MainActivity.this, new CasoUso.EventoPeticionAceptada<Bitmap>() {
+                    @Override
+                    public void alAceptarPeticion(Bitmap bitmap) {
+                        ivImage.setImageBitmap(bitmap);
+                        progressDialog.hide();
+                    }
+                }, new CasoUso.EventoPeticionRechazada() {
+                    @Override
+                    public void alRechazarOperacion() {
+                        progressDialog.hide();
+                    }
+                });
+
+                cuImagenUsuario.enviarPeticion(usuario.getRutaImagen());
+
             }
         }, new CasoUso.EventoPeticionRechazada() {
             @Override
@@ -196,51 +165,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        cu.enviarPeticion(id);
-
-        SWSeleccionarUsuarioId ws = new SWSeleccionarUsuarioId(this, new ServicioWeb.EventoPeticionAceptada<Usuario>() {
-            @Override
-            public void alAceptarPeticion(Usuario respuesta) {
-                etName.setText(respuesta.getNombre());
-                etLastName.setText(respuesta.getApellido());
-                bBirthDate.setText(respuesta.getFechaNacimiento());
-
-                SWImagenUsuario getUserImageUC = new SWImagenUsuario(MainActivity.this, new ServicioWeb.EventoPeticionAceptada<Bitmap>() {
-                    @Override
-                    public void alAceptarPeticion(Bitmap respuesta) {
-                        ivImage.setImageBitmap(respuesta);
-                        progressDialog.hide();
-                    }
-                }, new ServicioWeb.EventoPeticionRechazada() {
-                    @Override
-                    public void alRechazarPeticion() {
-                        progressDialog.hide();
-                    }
-                });
-                getUserImageUC.enviarPeticion(respuesta.getRutaImagen());
-
-                progressDialog.hide();
-            }
-        }, new ServicioWeb.EventoPeticionRechazada() {
-            @Override
-            public void alRechazarPeticion() {
-                progressDialog.hide();
-                Toast.makeText(MainActivity.this, "Request rejected", Toast.LENGTH_SHORT).show();
-            }
-        });
-        ws.enviarPeticion(Integer.parseInt(id));
+        cuSeleccionarUsuarioId.enviarPeticion(id);
 
         progressDialog.show();
     }
 
-    private void insertUser() {
+    private void registrarUsuario() {
         String id = etId.getText().toString();
         String name = etName.getText().toString();
         String lastName = etLastName.getText().toString();
         String birthDate = bBirthDate.getText().toString();
         String image = "";
 
-        Usuario user = new Usuario.Builder()
+        Usuario usuario = new Usuario.Builder()
                 .setId(Integer.parseInt(id))
                 .setNombre(name)
                 .setApellido(lastName)
@@ -250,35 +187,37 @@ public class MainActivity extends AppCompatActivity {
 
         progressDialog.show();
 
-        SWRegistrarUsuario ws = new SWRegistrarUsuario(this, new ServicioWeb.EventoPeticionAceptada<Boolean>() {
+        /**/
+
+        CURegistrarUsuario cuRegistrarUsuario = new CURegistrarUsuario(this, new CasoUso.EventoPeticionAceptada<String>() {
             @Override
-            public void alAceptarPeticion(Boolean respuesta) {
+            public void alAceptarPeticion(String s) {
                 progressDialog.hide();
 
-                if (respuesta)
+                if (s.equals("1"))
                     Toast.makeText(MainActivity.this, "Usuario registered!", Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(MainActivity.this, "Error attempting to register user!", Toast.LENGTH_SHORT).show();
             }
-        }, new ServicioWeb.EventoPeticionRechazada() {
+        }, new CasoUso.EventoPeticionRechazada() {
             @Override
-            public void alRechazarPeticion() {
+            public void alRechazarOperacion() {
                 progressDialog.hide();
                 Toast.makeText(MainActivity.this, "Request rejected", Toast.LENGTH_SHORT).show();
             }
         });
 
-        ws.enviarPeticion(user);
+        cuRegistrarUsuario.enviarPeticion(usuario);
     }
 
-    private void updateUser() {
+    private void actualizarUsuario() {
         String id = etId.getText().toString();
         String name = etName.getText().toString();
         String lastName = etLastName.getText().toString();
         String birthDate = bBirthDate.getText().toString();
         String image = "";
 
-        Usuario user = new Usuario.Builder()
+        Usuario usuario = new Usuario.Builder()
                 .setId(Integer.parseInt(id))
                 .setNombre(name)
                 .setApellido(lastName)
@@ -288,55 +227,53 @@ public class MainActivity extends AppCompatActivity {
 
         progressDialog.show();
 
-        UpdateUserUC uc = new UpdateUserUC(this, new ServicioWeb.EventoPeticionAceptada<Boolean>() {
+        /**/
+
+        new CUActualizarUsuario(this, new CasoUso.EventoPeticionAceptada<String>() {
             @Override
-            public void alAceptarPeticion(Boolean respuesta) {
+            public void alAceptarPeticion(String s) {
                 progressDialog.hide();
 
-                if (respuesta)
+                if (s.equals("1"))
                     Toast.makeText(MainActivity.this, "Usuario updated!", Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(MainActivity.this, "Error attempting to update user!", Toast.LENGTH_SHORT).show();
             }
-        }, new ServicioWeb.EventoPeticionRechazada() {
+        }, new CasoUso.EventoPeticionRechazada() {
             @Override
-            public void alRechazarPeticion() {
+            public void alRechazarOperacion() {
                 progressDialog.hide();
                 Toast.makeText(MainActivity.this, "Request rejected", Toast.LENGTH_SHORT).show();
             }
-        });
-
-        uc.enviarPeticion(id, user);
+        }).enviarPeticion(id, usuario);
     }
 
-    private void deleteUser() {
+    private void eliminarUsuario() {
         int id = Integer.parseInt(etId.getText().toString());
 
         progressDialog.show();
 
-        SWEliminarUsuario uc = new SWEliminarUsuario(this, new ServicioWeb.EventoPeticionAceptada<Boolean>() {
+        new CUEliminarUsuario(this, new CasoUso.EventoPeticionAceptada<String>() {
             @Override
-            public void alAceptarPeticion(Boolean respuesta) {
+            public void alAceptarPeticion(String s) {
                 progressDialog.hide();
 
-                if (respuesta)
+                if (s.equals("1"))
                     Toast.makeText(MainActivity.this, "Usuario deleted!", Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(MainActivity.this, "Error attempting to delete user!", Toast.LENGTH_SHORT).show();
             }
-        }, new ServicioWeb.EventoPeticionRechazada() {
+        }, new CasoUso.EventoPeticionRechazada() {
             @Override
-            public void alRechazarPeticion() {
+            public void alRechazarOperacion() {
                 progressDialog.hide();
                 Toast.makeText(MainActivity.this, "Request rejected", Toast.LENGTH_SHORT).show();
             }
-        });
-
-        uc.enviarPeticion(id);
+        }).enviarPeticion(id);
     }
 
-    private void listUsers() {
-        Intent intent = new Intent(this, ListUsersActivity.class);
+    private void listarUsuarios() {
+        Intent intent = new Intent(this, ListarUsuariosActivity.class);
         startActivity(intent);
     }
 }

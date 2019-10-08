@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.webservicestest">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,17 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:nombre=".ui.activities.ListUsersActivity"></activity>
-        <activity android:nombre=".ui.activities.MainActivity">
+        <activity android:name=".ui.actividades.ListarUsuariosActivity"></activity>
+        <activity android:name=".ui.actividades.MainActivity">
             <intent-filter>
-                <action android:nombre="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:nombre="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:nombre="android.permission.ACCESS_NETWORK_STATE" />
-
-    <uses-permission android:nombre="android.permission.INTERNET" />
 
 </manifest>

@@ -6,8 +6,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.webservicestest.entidades.Usuario;
 import com.example.webservicestest.negocios.presentadores.PresentadorUsuario;
-import com.example.webservicestest.servicios.ServicioWeb;
-import com.example.webservicestest.servicios.implementaciones.SWSeleccionarUsuarioId;
+import com.example.webservicestest.servicios.web.ServicioWeb;
+import com.example.webservicestest.servicios.web.implementaciones.SWSeleccionarUsuarioId;
 
 import org.json.JSONObject;
 

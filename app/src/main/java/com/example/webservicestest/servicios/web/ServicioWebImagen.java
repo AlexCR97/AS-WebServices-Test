@@ -1,4 +1,4 @@
-package com.example.webservicestest.servicios;
+package com.example.webservicestest.servicios.web;
 
 import android.content.Context;
 import android.graphics.Bitmap;
