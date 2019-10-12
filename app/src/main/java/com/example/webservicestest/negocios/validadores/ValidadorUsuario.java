@@ -2,10 +2,102 @@ package com.example.webservicestest.negocios.validadores;
 
 import com.example.webservicestest.entidades.Usuario;
 
-public class ValidadorUsuario {
+public class ValidadorUsuario extends Validador<Usuario> {
 
-    public boolean validar(Usuario usuario) {
-        return true;
+    public ValidadorUsuario(Usuario usuario) {
+        super(usuario);
     }
 
+    @Override
+    protected void definirValidaciones() {
+
+        // Id
+        agregarValidacion(new ValidadorPropiedad() {
+            @Override
+            public boolean validar() {
+                return t.getId() >= 0;
+            }
+
+        }, new ErrorValidacion() {
+            @Override
+            public String mensajeError() {
+                return "El id debe de estar entre el rango 0 - 100";
+            }
+
+            @Override
+            public Object propiedadInvalida() {
+                return t.getId();
+            }
+        });
+
+        // Nombre
+        agregarValidacion(new ValidadorPropiedad() {
+            @Override
+            public boolean validar() {
+                return !t.getNombre().isEmpty();
+            }
+
+        }, new ErrorValidacion() {
+            @Override
+            public String mensajeError() {
+                return "El nombre no puede estar vacio";
+            }
+
+            @Override
+            public Object propiedadInvalida() {
+                return t.getNombre();
+            }
+        });
+
+        // Apellidos
+        agregarValidacion(new ValidadorPropiedad() {
+            @Override
+            public boolean validar() {
+                return !t.getApellido().isEmpty();
+            }
+
+        }, new ErrorValidacion() {
+            @Override
+            public String mensajeError() {
+                return "El apellido no puede estar vacio";
+            }
+
+            @Override
+            public Object propiedadInvalida() {
+                return t.getApellido();
+            }
+        });
+
+        // Fecha nacimiento
+        agregarValidacion(new ValidadorPropiedad() {
+            @Override
+            public boolean validar() {
+                try {
+                    String[] fechaNacimiento = t.getFechaNacimiento().split("-");
+
+                    if (fechaNacimiento.length < 3)
+                        return false;
+
+                    Integer.parseInt(fechaNacimiento[0]);
+                    Integer.parseInt(fechaNacimiento[1]);
+                    Integer.parseInt(fechaNacimiento[2]);
+
+                    return true;
+                } catch (Exception ex) {
+                    return false;
+                }
+            }
+
+        }, new ErrorValidacion() {
+            @Override
+            public String mensajeError() {
+                return "La fecha debe de tener el siguiente formato: 'AAAA-MM-DD'";
+            }
+
+            @Override
+            public Object propiedadInvalida() {
+                return t.getFechaNacimiento();
+            }
+        });
+    }
 }

@@ -33,16 +33,17 @@ public class ListarUsuariosActivity extends AppCompatActivity {
         new CUListarUsuarios(this, new CasoUso.EventoPeticionAceptada<List<Usuario>>() {
             @Override
             public void alAceptarPeticion(List<Usuario> usuarios) {
+                progressDialog.dismiss();
+
                 UsuarioAdapter usersAdapter = new UsuarioAdapter(ListarUsuariosActivity.this, R.layout.item_user, usuarios);
                 lvUsers.setAdapter(usersAdapter);
-
-                progressDialog.hide();
             }
         }, new CasoUso.EventoPeticionRechazada() {
             @Override
             public void alRechazarOperacion() {
+                progressDialog.dismiss();
+
                 Toast.makeText(ListarUsuariosActivity.this, "Request rejected", Toast.LENGTH_SHORT).show();
-                progressDialog.hide();
             }
         }).enviarPeticion();
     }
