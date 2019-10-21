@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private Button bBirthDate;
     private Button bSelect, bInsert, bUpdate, bDelete;
     private Button bListUsers;
+    private Button bAbrirChats;
     private ProgressDialog progressDialog;
 
     @Override
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         bUpdate = findViewById(R.id.bUpdate);
         bDelete = findViewById(R.id.bDelete);
         bListUsers = findViewById(R.id.bListUsers);
+        bAbrirChats = findViewById(R.id.bAbrirChat);
 
         ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +108,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 listarUsuarios();
+            }
+        });
+
+        bAbrirChats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ChatActivity.class));
             }
         });
     }

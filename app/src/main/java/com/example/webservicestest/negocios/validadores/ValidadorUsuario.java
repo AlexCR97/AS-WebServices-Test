@@ -2,6 +2,8 @@ package com.example.webservicestest.negocios.validadores;
 
 import com.example.webservicestest.entidades.Usuario;
 
+import java.util.regex.Pattern;
+
 public class ValidadorUsuario extends Validador<Usuario> {
 
     public ValidadorUsuario(Usuario usuario) {
@@ -41,6 +43,26 @@ public class ValidadorUsuario extends Validador<Usuario> {
             @Override
             public String mensajeError() {
                 return "El nombre no puede estar vacio";
+            }
+
+            @Override
+            public Object propiedadInvalida() {
+                return t.getNombre();
+            }
+        });
+
+        agregarValidacion(new ValidadorPropiedad() {
+            @Override
+            public boolean validar() {
+                return !Pattern.compile("[^a-zA-Z]")
+                        .matcher(t.getNombre())
+                        .find();
+            }
+        }, new ErrorValidacion() {
+
+            @Override
+            public String mensajeError() {
+                return "El nombre solo puede contener letras de la 'A' a la 'Z'";
             }
 
             @Override
